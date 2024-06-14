@@ -19,9 +19,9 @@ package com.google.android.samples.dynamiccodeloading
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 
 /**
  * The single, main activity of this sample.
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var saveText: TextView
     private lateinit var saveButton: Button
 
-    private lateinit var viewModel: MainViewModel
+    val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity() {
         incrementButton = findViewById(R.id.incrementButton)
         saveText = findViewById(R.id.saveText)
         saveButton = findViewById(R.id.saveButton)
-
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
         incrementButton.setOnClickListener {
             viewModel.incrementCounter()

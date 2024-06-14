@@ -52,12 +52,22 @@ abstract class AbstractMainViewModel(app: Application) : AndroidViewModel(app) {
             when (state.status()) {
                 SplitInstallSessionStatus.FAILED -> {
                     Log.d(TAG, "Module install failed with ${state.errorCode()}")
-                    Toast.makeText(getApplication(), "Module install failed with ${state.errorCode()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        getApplication(),
+                        "Module install failed with ${state.errorCode()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+
                 SplitInstallSessionStatus.INSTALLED -> {
-                    Toast.makeText(getApplication(), "Storage module installed successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        getApplication(),
+                        "Storage module installed successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     saveCounter()
                 }
+
                 else -> Log.d(TAG, "Status: ${state.status()}")
             }
         }
@@ -76,8 +86,8 @@ abstract class AbstractMainViewModel(app: Application) : AndroidViewModel(app) {
         _counter.value = (_counter.value ?: 0) + 1
     }
 
-    fun loadCounter(){
-        if (isStorageInstalled()){
+    fun loadCounter() {
+        if (isStorageInstalled()) {
             initializeStorageFeature()
         }
         _counter.value = storageModule?.loadCounter() ?: 0
@@ -100,10 +110,13 @@ abstract class AbstractMainViewModel(app: Application) : AndroidViewModel(app) {
     protected abstract fun initializeStorageFeature()
 
     private fun isStorageInstalled() =
-        if (BuildConfig.DEBUG) true else splitInstallManager.installedModules.contains(STORAGE_MODULE)
+        if (BuildConfig.DEBUG) true else splitInstallManager.installedModules.contains(
+            STORAGE_MODULE
+        )
 
     private fun requestStorageInstall() {
-        Toast.makeText(getApplication(), "Requesting storage module install", Toast.LENGTH_SHORT).show()
+        Toast.makeText(getApplication(), "Requesting storage module install", Toast.LENGTH_SHORT)
+            .show()
         val request =
             SplitInstallRequest
                 .newBuilder()
@@ -115,7 +128,11 @@ abstract class AbstractMainViewModel(app: Application) : AndroidViewModel(app) {
             .addOnSuccessListener { id -> sessionId = id }
             .addOnFailureListener { exception ->
                 Log.e(TAG, "Error installing module: ", exception)
-                Toast.makeText(getApplication(), "Error requesting module install", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    getApplication(),
+                    "Error requesting module install",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 
